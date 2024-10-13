@@ -1,0 +1,38 @@
+## System.LimitException: Too many DML statements: 151
+
+This error occurs when performing a DML operation inside a for loop. Salesforce imposes a limitation of 150 DML operations per transaction, 
+and exceeding this limit by even one additional DML operation will result in this error.
+
+# Error Example
+public class errorListDemo {
+    
+    // System.LimitException: Too many DML statements: 151
+    public static void governorLimitDMLDemo(){
+        for(Integer i=0; i<=151; i++) {
+            Account acc = new Account();
+            acc.Name = 'Test';
+            insert acc;
+        }
+    }
+}
+
+If you use this pattern in your code, you will encounter the error: System.LimitException: Too many DML statements: 151.
+
+To avoid this type of error, you can use the following code pattern.
+
+# Error Solution
+public class errorListDemo {
+    
+    // Avoid System.LimitException: Too many DML statements: 151
+    public static void governorLimitDMLDemo() {
+        
+        List<Account> accountList = new List<Account>();
+        for(Integer i = 0; i <= 151; i++) {
+            Account acc = new Account();
+            acc.Name = 'Test ' + i;
+            accountList.add(acc); 
+        }
+        
+        insert accountList;
+    }
+}
